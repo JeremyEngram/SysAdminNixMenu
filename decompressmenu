@@ -1,0 +1,48 @@
+#!/bin/bash
+
+PS3="Select a compression format: "
+options=("gzip" "bzip2" "xz" "zip" "tar")
+
+select opt in "${options[@]}" "Quit"; do
+    case $opt in
+        "gzip")
+            echo "You selected gzip decompression."
+            read -p "Enter the path of the file you want to decompress: " file_path
+            gunzip $file_path
+            echo "File decompressed with gzip."
+            break
+            ;;
+        "bzip2")
+            echo "You selected bzip2 decompression."
+            read -p "Enter the path of the file you want to decompress: " file_path
+            bunzip2 $file_path
+            echo "File decompressed with bzip2."
+            break
+            ;;
+        "xz")
+            echo "You selected xz decompression."
+            read -p "Enter the path of the file you want to decompress: " file_path
+            unxz $file_path
+            echo "File decompressed with xz."
+            break
+            ;;
+        "zip")
+            echo "You selected zip decompression."
+            read -p "Enter the path of the file you want to decompress: " file_path
+            unzip $file_path
+            echo "File decompressed with zip."
+            break
+            ;;
+        "tar")
+            echo "You selected tar decompression."
+            read -p "Enter the path of the file you want to decompress: " file_path
+            tar -xzvf $file_path
+            echo "File decompressed with tar."
+            break
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "Invalid option. Please try again.";;
+    esac
+done

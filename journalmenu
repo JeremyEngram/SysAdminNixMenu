@@ -1,0 +1,88 @@
+#!/bin/bash
+
+# Define an array of options
+options=(
+    "All journal messages"
+    "Journal messages for a specific systemd unit"
+    "Follow the journal in real-time"
+    "Journal messages from the current boot session only"
+    "Kernel messages only"
+    "Journal messages since a specific date and time"
+    "Journal messages until a specific date and time"
+    "Disk usage of the journal"
+    "Remove older journal entries until the journal size is below the specified size"
+    "Remove older journal entries until the specified time is reached"
+    "Exit"
+)
+
+# Define a function to display the journal messages for a specific systemd unit
+function show_journal_for_unit {
+    read -p "Enter the name of the systemd unit: " unit_name
+    journalctl -u $unit_name
+}
+
+# Define a function to display journal messages since a specific date and time
+function show_journal_since_time {
+    read -p "Enter the start time (format: YYYY-MM-DD HH:MM:SS): " start_time
+    journalctl --since "$start_time"
+}
+
+# Define a function to display journal messages until a specific date and time
+function show_journal_until_time {
+    read -p "Enter the end time (format: YYYY-MM-DD HH:MM:SS): " end_time
+    journalctl --until "$end_time"
+}
+
+# Define a function to remove older journal entries until the journal size is below the specified size
+function vacuum_journal_size {
+    read -p "Enter the maximum journal size in bytes: " size
+    journalctl --vacuum-size=$size
+}
+
+# Define a function to remove older journal entries until the specified time is reached
+function vacuum_journal_time {
+    read -p "Enter the maximum age of journal entries in seconds: " time
+    journalctl --vacuum-time=$time
+}
+
+# Use the select command to create a menu
+select option in "${options[@]}"; do
+    case $option in
+        "All journal messages")
+            journalctl
+            ;;
+        "Journal messages for a specific systemd unit")
+            show_journal_for_unit
+            ;;
+        "Follow the journal in real-time")
+            journalctl -f
+            ;;
+        "Journal messages from the current boot session only")
+            journalctl -b
+            ;;
+        "Kernel messages only")
+            journalctl -k
+            ;;
+        "Journal messages since a specific date and time")
+            show_journal_since_time
+            ;;
+        "Journal messages until a specific date and time")
+            show_journal_until_time
+            ;;
+        "Disk usage of the journal")
+            journalctl --disk-usage
+            ;;
+        "Remove older journal entries until the journal size is below the specified size")
+            vacuum_journal_size
+            ;;
+        "Remove older journal entries until the specified time is reached")
+            vacuum_journal_time
+            ;;
+        "Exit")
+            break
+            ;;
+        *)
+            echo "Invalid option. Please select a valid option."
+            ;;
+    esac
+done

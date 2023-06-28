@@ -1,0 +1,48 @@
+#!/bin/bash
+
+PS3="Select a compression format: "
+options=("gzip" "bzip2" "xz" "zip" "tar")
+
+select opt in "${options[@]}" "Quit"; do
+    case $opt in
+        "gzip")
+            echo "You selected gzip compression."
+            read -p "Enter the path of the file you want to compress: " file_path
+            gzip $file_path
+            echo "File compressed with gzip."
+            break
+            ;;
+        "bzip2")
+            echo "You selected bzip2 compression."
+            read -p "Enter the path of the file you want to compress: " file_path
+            bzip2 $file_path
+            echo "File compressed with bzip2."
+            break
+            ;;
+        "xz")
+            echo "You selected xz compression."
+            read -p "Enter the path of the file you want to compress: " file_path
+            xz $file_path
+            echo "File compressed with xz."
+            break
+            ;;
+        "zip")
+            echo "You selected zip compression."
+            read -p "Enter the path of the file you want to compress: " file_path
+            zip $file_path.zip $file_path
+            echo "File compressed with zip."
+            break
+            ;;
+        "tar")
+            echo "You selected tar compression."
+            read -p "Enter the path of the file you want to compress: " file_path
+            tar -czvf $file_path.tar.gz $file_path
+            echo "File compressed with tar."
+            break
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "Invalid option. Please try again.";;
+    esac
+done

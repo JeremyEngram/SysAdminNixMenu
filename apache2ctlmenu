@@ -1,0 +1,28 @@
+#!/bin/bash
+
+PS3='Please enter your choice: '
+options=("Start Apache" "Stop Apache" "Restart Apache" "Test Apache Configuration" "Status of Apache" "Quit")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Start Apache")
+            sudo apache2ctl start
+            ;;
+        "Stop Apache")
+            sudo apache2ctl stop
+            ;;
+        "Restart Apache")
+            sudo apache2ctl restart
+            ;;
+        "Test Apache Configuration")
+            sudo apache2ctl configtest
+            ;;
+        "Status of Apache")
+            sudo apache2ctl status
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "Invalid option. Please try again.";;
+    esac
+done
